@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Pull the repository from your source control system
-                git url: 'https://your-repo-url.git', branch: 'main'
+                git url: 'https://github.com/awainright/jenkinsTestt.git', branch: 'main'
             }
         }
         stage('Build Docker Image') {
