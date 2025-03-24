@@ -1,39 +1,12 @@
+Jenkinsfile (Declarative Pipeline)
+/* Requires the Docker Pipeline plugin */
 pipeline {
-    agent any
-
-    environment {
-        // Define your Docker image name
-        IMAGE_NAME = "hello-world-app"
-    }
-
+    agent { docker { image 'maven:3.9.9-eclipse-temurin-21-alpine' } }
     stages {
-        stage('Checkout') {
+        stage('build') {
             steps {
-                // Pull the repository from your source control system
-                git url: 'https://github.com/awainright/jenkinsTestt.git', branch: 'main'
+                sh 'mvn --version'
             }
-        }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Build the Docker image with a tag that includes the build number
-                    dockerImage = docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
-                }
-            }
-        }
-        stage('Deploy Docker Container') {
-            steps {
-                script {
-                    // Run the Docker container in detached mode mapping port 5000
-                    dockerContainer = dockerImage.run("-d -p 5000:5000")
-                    echo "Container started with ID: ${dockerContainer.id}"
-                }
-            }
-        }
-    }
-    post {
-        always {
-            echo 'Pipeline execution completed.'
         }
     }
 }
